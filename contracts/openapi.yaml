@@ -1,0 +1,90 @@
+openapi: 3.1.0
+info:
+  title: 回声智能业务 API
+  version: 0.1.0
+servers:
+  - url: http://localhost:3000
+security:
+  - bearerAuth: []
+paths:
+  /v1/conversations:
+    post:
+      summary: 创建客户会话
+      responses:
+        "201": {description: Created, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}
+  /v1/conversations/{conversationId}/messages:
+    post:
+      summary: 发送消息，支持 Accept text/event-stream
+      parameters:
+        - {$ref: "#/components/parameters/ConversationId"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties: {text: {type: string, maxLength: 2000}, structured: {type: object}}
+      responses:
+        "200": {description: Success, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}, text/event-stream: {schema: {type: string}}}}
+  /v1/conversations/{conversationId}/offers:
+    get:
+      summary: 获取仍有效的可执行方案
+      parameters: [{$ref: "#/components/parameters/ConversationId"}]
+      responses: {"200": {description: Success, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}}
+  /v1/offers/{offerId}/confirm:
+    post:
+      summary: 用户确认方案、锁库并创建待支付订单
+      parameters:
+        - {name: offerId, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {type: object, required: [state_version], properties: {state_version: {type: integer}}}}}
+      responses: {"200": {description: Success, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}, "409": {description: 报价过期、库存或状态冲突}}
+  /v1/orders/{orderId}:
+    get:
+      summary: 查询订单状态
+      parameters:
+        - {name: orderId, in: path, required: true, schema: {type: string}}
+      responses: {"200": {description: Success, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}}
+  /v1/handoffs:
+    post:
+      summary: 创建人工接管和 Copilot 建议
+      requestBody:
+        required: true
+        content: {application/json: {schema: {type: object, required: [conversation_id], properties: {conversation_id: {type: string}, reason: {type: string}}}}}
+      responses: {"201": {description: Created, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}}
+  /v1/handoffs/{handoffId}/reply:
+    post:
+      summary: 人工选择或编辑 Copilot 建议后确认发送
+      parameters:
+        - {name: handoffId, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {type: object, properties: {suggestion_id: {type: string}, text: {type: string, maxLength: 2000}}}}}
+      responses: {"200": {description: Sent and audited, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}}
+  /v1/improvement-proposals/{proposalId}/decision:
+    post:
+      summary: 人工审批知识提案
+      parameters:
+        - {name: proposalId, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {type: object, required: [decision], properties: {decision: {enum: [APPROVED, REJECTED]}}}}}
+      responses: {"200": {description: Decided, content: {application/json: {schema: {$ref: "#/components/schemas/Envelope"}}}}}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer}
+  parameters:
+    ConversationId: {name: conversationId, in: path, required: true, schema: {type: string}}
+  schemas:
+    Envelope:
+      type: object
+      required: [request_id, trace_id, state_version, result, evidence, error]
+      properties:
+        request_id: {type: string}
+        trace_id: {type: string}
+        state_version: {type: integer}
+        result: {}
+        evidence: {type: array, items: {type: object}}
+        error: {type: [object, "null"]}

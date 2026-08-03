@@ -1,0 +1,17 @@
+{
+  "name": "echo-intelligence-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "回声智能：多商户设备租赁成交与履约客服 MVP",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test --test-concurrency=1",
+    "test:e2e": "node scripts/e2e.mjs",
+    "check": "node scripts/validate-skills.mjs && node --check src/server.js && node --test --test-concurrency=1"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

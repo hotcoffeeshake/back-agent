@@ -1,0 +1,4 @@
+interface:
+  display_name: "可执行方案校验"
+  short_description: "实时核验设备库存排期价格政策并生成有效报价方案"
+  default_prompt: "使用 $executable-offer-validation 实时校验候选并生成可执行报价。"

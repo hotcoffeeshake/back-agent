@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>回声智能 · 设备租赁顾问</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <main class="customer-shell">
+    <header class="topbar">
+      <div class="brand-mark">回</div>
+      <div><strong>回声智能</strong><small>设备租赁成交与履约助手</small></div>
+      <span class="status-dot">在线</span>
+    </header>
+    <section id="timeline" class="timeline" aria-live="polite">
+      <div class="message assistant">
+        <div class="avatar">AI</div>
+        <div class="bubble"><strong>您好，我是回声智能。</strong><br>告诉我设备用途、地点和时间，我会比较多个商户并实时核验库存与价格。</div>
+      </div>
+    </section>
+
+    <section class="smart-panel">
+      <div class="panel-title"><span>Smart Filters</span><small>关键字段由您确认，不由 AI 猜测</small></div>
+      <div class="filter-grid">
+        <label>设备类型<select id="category"><option>投影设备</option><option>音响设备</option><option>摄影设备</option></select></label>
+        <label>使用场景<input id="purpose" value="会议"></label>
+        <label>数量<input id="quantity" type="number" min="1" value="1"></label>
+        <label>地点<input id="location" value="上海市"></label>
+        <label>开始时间<input id="startAt" type="datetime-local" value="2026-08-10T09:00"></label>
+        <label>结束时间<input id="endAt" type="datetime-local" value="2026-08-11T18:00"></label>
+        <label>预算上限（元）<input id="budget" type="number" min="1" value="3000"></label>
+        <label class="checks"><input id="deliveryRequired" type="checkbox" checked> 需要配送</label>
+        <label class="checks"><input id="installationRequired" type="checkbox"> 需要安装</label>
+      </div>
+    </section>
+
+    <form id="composer" class="composer">
+      <input id="message" autocomplete="off" placeholder="例如：我要为会议租一套投影设备" value="我要为会议租一套投影设备">
+      <button type="submit" class="primary">发送</button>
+      <button type="button" id="human" class="ghost">转人工</button>
+    </form>
+    <p class="footnote">动态库存与价格来自实时工具；政策说明可查看来源。AI 不直接处理退款或改价。</p>
+  </main>
+  <script type="module" src="/customer.js"></script>
+</body>
+</html>

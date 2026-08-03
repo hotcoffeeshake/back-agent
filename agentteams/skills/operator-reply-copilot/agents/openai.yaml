@@ -1,0 +1,4 @@
+interface:
+  display_name: "人工客服话术助手"
+  short_description: "根据接管上下文为人工客服生成安全可编辑的推荐回复"
+  default_prompt: "使用 $operator-reply-copilot 为当前人工接管任务生成三条候选话术。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "知识提案与回测"
+  short_description: "从已解决会话生成知识变更差异并运行黄金集回归验证"
+  default_prompt: "使用 $knowledge-proposal-and-replay 为已解决会话生成知识提案并回测。"

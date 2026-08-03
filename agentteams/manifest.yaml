@@ -1,0 +1,47 @@
+apiVersion: echo-intelligence/v1alpha1
+kind: AgentTeamBlueprint
+metadata:
+  name: echo-rental-fulfillment
+  version: 0.1.0
+spec:
+  runtimeAdapter: agentteams
+  leader:
+    name: echo-team-leader
+    soul: ./leader/SOUL.md
+    agent: ./leader/AGENT.md
+    skills:
+      - safe-transaction-and-handoff
+  workers:
+    - name: requirement-agent
+      soul: ./workers/requirement-agent/SOUL.md
+      agent: ./workers/requirement-agent/AGENT.md
+      skills: [requirement-elicitation]
+      tools: []
+    - name: recommendation-agent
+      soul: ./workers/recommendation-agent/SOUL.md
+      agent: ./workers/recommendation-agent/AGENT.md
+      skills: [evidence-based-comparison]
+      tools: [search_catalog, get_product_detail, get_policy]
+    - name: fulfillment-agent
+      soul: ./workers/fulfillment-agent/SOUL.md
+      agent: ./workers/fulfillment-agent/AGENT.md
+      skills: [executable-offer-validation, safe-transaction-and-handoff]
+      tools: [check_availability, calculate_quote, get_policy, hold_inventory, release_hold, create_order_draft]
+    - name: quality-knowledge-agent
+      soul: ./workers/quality-knowledge-agent/SOUL.md
+      agent: ./workers/quality-knowledge-agent/AGENT.md
+      skills: [conversation-debugger, knowledge-proposal-and-replay]
+      tools: [list_failed_cases, create_improvement_proposal, run_regression_suite]
+    - name: operator-reply-copilot
+      soul: ./workers/operator-reply-copilot/SOUL.md
+      agent: ./workers/operator-reply-copilot/AGENT.md
+      skills: [operator-reply-copilot]
+      tools: [get_product_detail, check_availability, get_policy, get_order_status]
+  forbiddenAgentTools:
+    - publish_knowledge_version
+    - refund_payment
+    - change_price
+  notes:
+    - "将每个目录中的 SOUL.md、AGENT.md 内容粘贴到 AgentTeams 对应配置。"
+    - "Skill 需先在 AgentTeams 完成内容审核与版本发布，再绑定 Worker。"
+    - "MCP 服务使用 contracts/mcp-openapi.yaml 以 HTTP TO MCP 方式导入。"

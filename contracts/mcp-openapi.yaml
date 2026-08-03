@@ -1,0 +1,140 @@
+openapi: 3.1.0
+info:
+  title: 回声智能业务工具 MCP Gateway
+  version: 0.1.0
+  description: 部署到 SAE 后供 AgentTeams 以 HTTP TO MCP 方式导入。写工具由网关校验租户、Scope、状态版本、确认令牌和幂等键。
+servers:
+  - url: https://mcp-gateway.example.internal
+security:
+  - bearerAuth: []
+paths:
+  /tools/search-catalog:
+    post:
+      operationId: search_catalog
+      x-scope: catalog:read
+      x-timeout-ms: 3000
+      x-max-retries: 2
+      requestBody: {$ref: "#/components/requestBodies/CatalogSearch"}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/get-product-detail:
+    post:
+      operationId: get_product_detail
+      x-scope: catalog:read
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, product_id], properties: {tenant_id: {type: string}, product_id: {type: string}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/check-availability:
+    post:
+      operationId: check_availability
+      x-scope: inventory:read
+      x-timeout-ms: 3000
+      x-max-retries: 2
+      requestBody: {required: true, content: {application/json: {schema: {$ref: "#/components/schemas/AvailabilityInput"}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/calculate-quote:
+    post:
+      operationId: calculate_quote
+      x-scope: pricing:read
+      x-timeout-ms: 3000
+      x-max-retries: 2
+      requestBody: {required: true, content: {application/json: {schema: {$ref: "#/components/schemas/QuoteInput"}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/get-policy:
+    post:
+      operationId: get_policy
+      x-scope: policy:read
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, query], properties: {tenant_id: {type: string}, merchant_id: {type: string}, query: {type: string}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/get-order-status:
+    post:
+      operationId: get_order_status
+      x-scope: order:read
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, order_id], properties: {tenant_id: {type: string}, order_id: {type: string}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/hold-inventory:
+    post:
+      operationId: hold_inventory
+      x-scope: inventory:hold
+      x-timeout-ms: 3000
+      x-max-retries: 0
+      requestBody: {required: true, content: {application/json: {schema: {$ref: "#/components/schemas/WriteContext"}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}, "409": {description: 库存、状态或幂等冲突}}
+  /tools/release-hold:
+    post:
+      operationId: release_hold
+      x-scope: inventory:release
+      x-timeout-ms: 3000
+      x-max-retries: 0
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, hold_id, idempotency_key], properties: {tenant_id: {type: string}, hold_id: {type: string}, idempotency_key: {type: string}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/create-order-draft:
+    post:
+      operationId: create_order_draft
+      x-scope: order:draft:create
+      x-timeout-ms: 3000
+      x-max-retries: 0
+      requestBody: {required: true, content: {application/json: {schema: {$ref: "#/components/schemas/WriteContext"}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/create-handoff:
+    post:
+      operationId: create_handoff
+      x-scope: handoff:create
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, conversation_id, reason, packet], properties: {tenant_id: {type: string}, conversation_id: {type: string}, reason: {type: string}, packet: {type: object}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/list-failed-cases:
+    post:
+      operationId: list_failed_cases
+      x-scope: quality:read
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id], properties: {tenant_id: {type: string}, since: {type: string, format: date-time}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/create-improvement-proposal:
+    post:
+      operationId: create_improvement_proposal
+      x-scope: proposal:create
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, trace_id, diff], properties: {tenant_id: {type: string}, trace_id: {type: string}, diff: {type: object}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+  /tools/run-regression-suite:
+    post:
+      operationId: run_regression_suite
+      x-scope: evaluation:run
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [tenant_id, proposal_id, dataset_version], properties: {tenant_id: {type: string}, proposal_id: {type: string}, dataset_version: {type: string}}}}}}
+      responses: {"200": {$ref: "#/components/responses/ToolResult"}}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer}
+  requestBodies:
+    CatalogSearch:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [tenant_id, category, location]
+            properties: {tenant_id: {type: string}, category: {type: string}, location: {type: string}, limit: {type: integer, minimum: 1, maximum: 3}}
+  responses:
+    ToolResult:
+      description: 工具执行结果
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [request_id, trace_id, result, error]
+            properties: {request_id: {type: string}, trace_id: {type: string}, result: {}, error: {type: [object, "null"]}}
+  schemas:
+    AvailabilityInput:
+      type: object
+      required: [tenant_id, product_id, quantity, start_at, end_at]
+      properties: {tenant_id: {type: string}, product_id: {type: string}, quantity: {type: integer, minimum: 1}, start_at: {type: string, format: date-time}, end_at: {type: string, format: date-time}}
+    QuoteInput:
+      allOf:
+        - {$ref: "#/components/schemas/AvailabilityInput"}
+        - {type: object, properties: {delivery_required: {type: boolean}, installation_required: {type: boolean}}}
+    WriteContext:
+      type: object
+      required: [tenant_id, conversation_id, offer_id, state_version, confirmation_token, idempotency_key]
+      properties:
+        tenant_id: {type: string}
+        conversation_id: {type: string}
+        offer_id: {type: string}
+        state_version: {type: integer, minimum: 1}
+        confirmation_token: {type: string}
+        idempotency_key: {type: string}

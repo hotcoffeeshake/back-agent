@@ -1,0 +1,4 @@
+interface:
+  display_name: "会话调试"
+  short_description: "基于全链路证据定位客服会话中的知识工具规则错误"
+  default_prompt: "使用 $conversation-debugger 根据 Trace 定位这次客服会话的失败根因。"

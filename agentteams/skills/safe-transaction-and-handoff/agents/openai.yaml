@@ -1,0 +1,4 @@
+interface:
+  display_name: "安全交易与接管"
+  short_description: "安全执行锁库建单补偿或生成完整的人工接管任务包"
+  default_prompt: "使用 $safe-transaction-and-handoff 执行已确认方案或安全转人工。"

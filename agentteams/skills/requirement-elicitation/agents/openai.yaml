@@ -1,0 +1,4 @@
+interface:
+  display_name: "需求诊断"
+  short_description: "从用户自然语言中补全设备租赁关键约束并生成澄清问题"
+  default_prompt: "使用 $requirement-elicitation 分析本轮设备租赁需求并输出结构化约束。"

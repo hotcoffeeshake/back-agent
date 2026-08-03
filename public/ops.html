@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>回声智能 · 客服运营台</title><link rel="stylesheet" href="/app.css">
+</head>
+<body class="ops-body">
+  <header class="ops-header">
+    <div class="brand-mark">回</div><div><strong>客服运营台</strong><small>Agent Copilot · 人工审批 · 全链路审计</small></div>
+    <button id="refresh" class="ghost">刷新数据</button><a class="link-button" href="/">客户 H5</a>
+  </header>
+  <main class="ops-shell">
+    <section class="metric-row">
+      <article><small>待接管</small><strong id="openCount">0</strong><span>需要人工决策</span></article>
+      <article><small>Copilot 建议</small><strong id="suggestionCount">0</strong><span>发送前必须人工确认</span></article>
+      <article><small>待审知识</small><strong id="proposalCount">0</strong><span>回测通过后可审批</span></article>
+      <article><small>审计事件</small><strong id="auditCount">0</strong><span>按 Trace 可追溯</span></article>
+    </section>
+    <nav class="tabs" aria-label="运营模块">
+      <button class="active" data-tab="handoffs">人工接管 + Copilot</button>
+      <button data-tab="proposals">知识提案</button>
+      <button data-tab="audit">审计日志</button>
+    </nav>
+    <section id="handoffs" class="tab-panel active"><div id="handoffList" class="stack"></div></section>
+    <section id="proposals" class="tab-panel"><div id="proposalList" class="stack"></div></section>
+    <section id="audit" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>时间</th><th>Trace</th><th>操作者</th><th>动作</th><th>资源</th></tr></thead><tbody id="auditList"></tbody></table></div></section>
+  </main>
+  <script type="module" src="/ops.js"></script>
+</body>
+</html>

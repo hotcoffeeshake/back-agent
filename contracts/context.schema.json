@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://echo.example/schemas/shared-context.json",
+  "title": "Echo Intelligence Shared Agent Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor", "requirement", "evidence", "candidates", "execution", "risk_flags"],
+  "properties": {
+    "actor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tenant_id", "actor_id", "actor_type", "scopes"],
+      "properties": {
+        "tenant_id": {"type": "string"}, "merchant_id": {"type": ["string", "null"]},
+        "actor_id": {"type": "string"}, "actor_type": {"enum": ["customer", "operator", "system"]},
+        "scopes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "requirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "category", "purpose", "quantity", "location", "start_at", "end_at", "budget"],
+      "properties": {
+        "version": {"type": "integer", "minimum": 1}, "category": {"type": "string"},
+        "purpose": {"type": "string"}, "quantity": {"type": "integer", "minimum": 1},
+        "location": {"type": "string"}, "start_at": {"type": "string", "format": "date-time"},
+        "end_at": {"type": "string", "format": "date-time"}, "budget": {"type": "number", "exclusiveMinimum": 0},
+        "delivery_required": {"type": "boolean"}, "installation_required": {"type": "boolean"}
+      }
+    },
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "candidates": {"type": "array", "maxItems": 3, "items": {"type": "object"}},
+    "execution": {
+      "type": "object",
+      "properties": {
+        "offer_id": {"type": ["string", "null"]}, "valid_until": {"type": ["string", "null"], "format": "date-time"},
+        "hold_id": {"type": ["string", "null"]}, "order_id": {"type": ["string", "null"]},
+        "idempotency_key": {"type": ["string", "null"]}
+      }
+    },
+    "risk_flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["doc_id", "version", "title", "chunk_id", "score"],
+      "properties": {
+        "doc_id": {"type": "string"}, "version": {"type": "string"}, "title": {"type": "string"},
+        "chunk_id": {"type": "string"}, "score": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

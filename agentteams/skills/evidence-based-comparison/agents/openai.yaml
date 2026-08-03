@@ -1,0 +1,4 @@
+interface:
+  display_name: "证据化方案比较"
+  short_description: "跨商户检索设备候选并生成带来源的可解释对比方案"
+  default_prompt: "使用 $evidence-based-comparison 比较符合需求的多商户设备候选。"
