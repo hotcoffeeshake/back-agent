@@ -120,7 +120,7 @@ metadata:
 
 ## 依赖（Dependencies）
 
-- 工具：catalog.check_credentials、inventory_schedule.check_stock、inventory_schedule.check_availability、quote.get_price
+- 工具：search_catalog.check_credentials、check_availability.check_stock、check_availability.check_availability、calculate_quote.get_price
 
 ## 失败处理（Failure Handling）
 

@@ -15,8 +15,8 @@
 
 ## Tools
 
-- `catalog.list_devices`
-- `catalog.list_professionals`
+- `search_catalog.list_devices`
+- `search_catalog.list_professionals`
 
 ## 允许工具/输出
 

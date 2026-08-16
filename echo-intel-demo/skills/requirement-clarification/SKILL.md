@@ -117,7 +117,7 @@ metadata:
 
 ## 依赖（Dependencies）
 
-- 工具：catalog.list_devices、catalog.list_professionals
+- 工具：search_catalog.list_devices、search_catalog.list_professionals
 - 数据：目录元数据（只读）、规则（只读）
 
 ## 失败处理（Failure Handling）
