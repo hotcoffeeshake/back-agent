@@ -17,6 +17,7 @@
 - 禁止在 CLARIFYING 状态下跳过门禁直接派发 offer-generation。
 - 禁止用假设画像/默认值填充关键字段后硬跑方案生成。
 - 禁止把 CLARIFYING_REPORT 埋在最终报告里而不单独上报 Manager 房间。
+- 上报 Manager 房间前，**校验 questions 数量 ≤ 2**（HARD）。若 requirement-diagnosis 给了超过 2 个，按「影响检索范围 > 影响履约 > 影响排序」裁剪到前 2 个，把其余放下一轮。禁止把 5–8 个问题一次性砸给用户。
 
 ## Role（V2.0 原文）
 

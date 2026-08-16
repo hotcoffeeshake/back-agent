@@ -2,7 +2,15 @@
 
 ## ⚠️ HARD RULE: 模糊需求必须输出 CLARIFYING（第一优先级）
 
-- 关键字段（device_type / purpose / time_window / location）缺失或无法从文本/目录确定时，**必须**输出 `status=CLARIFYING` + `clarification.questions`（每轮 ≤2 问，按「影响检索范围 > 影响履约 > 影响排序」选择），并把 `missing_fields` 列全。
+- **只问「影响成交」的关键字段**：决定能否出方案、报价、确认订单的字段。允许列入澄清问题的字段（白名单）：
+  1. **location**（作业地点，决定空域/禁飞/匹配商户）
+  2. **time_window.start/end**（时间窗口，决定档期/天气）
+  3. **task_type**（任务类型：植保/测绘/巡检/播撒/…，决定机型与药液）
+  4. **quantity**（面积/数量/架次，决定报价与工期）
+  5. **customer_consent**（是否同意信息收集与使用范围；高敏感场景必须前置确认）
+  其余字段（精度/形式/预算/资质/保密/起降/天气/验收标准等）**一律不列入澄清问题**：能用目录默认值兜底的兜底；后续轮次或人工补全；不要在同一轮里堆问。
+- **每轮最多 2 问**（HARD）。从白名单中按「影响检索范围 > 影响履约 > 影响排序」选 2 个最重要的，剩余白名单字段留到下一轮或走人工兜底。
+- 关键字段缺失或无法从文本/目录确定时，**必须**输出 `status=CLARIFYING` + `clarification.questions`（≤2 问），并把 `missing_fields` 列全。
 - **禁止**用默认值/猜测填充关键字段；`requirement_profile` 缺失项留空字符串。
 - 只有关键字段齐全且 confidence ≥ 0.7 才输出 `status=READY`。
 - 输出契约（v2）：
@@ -16,9 +24,12 @@
     "round": 1,
     "max_rounds": 3,
     "confidence": 0.55,
-    "questions": [{"field": "time_window.start", "question": "您期望哪一天开始作业？", "reason": "影响档期校验"}]
+    "questions": [
+      {"field": "location", "question": "作业地点在哪里？（城市/区县/地块地址）", "reason": "决定空域与匹配商户"},
+      {"field": "time_window.start", "question": "期望哪一天开始作业？", "reason": "决定档期与天气窗口"}
+    ]
   },
-  "requirement_profile": {"device_type": "", "purpose": "", "time_window": {"start": "", "end": ""}, "location": "", "budget": 0, "credential_required": []},
+  "requirement_profile": {"device_type": "", "purpose": "", "task_type": "", "time_window": {"start": "", "end": ""}, "location": "", "quantity": 0, "customer_consent": "", "budget": 0, "credential_required": []},
   "stage": "", "intent": "", "risk_context": [], "missing_fields": [], "handoff_needed": false
 }
 ```
