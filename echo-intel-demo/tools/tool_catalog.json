@@ -1,26 +1,87 @@
 {
-  "_note": "严格对齐文档：组件名取表格65「MCP/适配器层」，风险分级取表格129（L0 只读）。仅保留闭环1（售前方案推荐，止于方案）必需的工具；锁档/草稿单、订单/支付/物流、接管、审批、知识工具等组件属闭环2/3/4，本 demo 忽略。工具名(name)已对齐仓库根目录 MockBusinessMcpGateway 规范名（search_catalog / check_availability / calculate_quote，与 contracts/mcp-openapi.yaml 一致）；函数覆盖表格81「可执行方案校验」五要素：设备、专业人员、资质、价格、档期。",
+  "_note": "补齐闭环 2/3/4，工具名对齐 contracts/mcp-openapi.yaml。写类工具采用 operationId（如 hold_inventory）。L2/L3 写类工具需审批令牌与幂等键。",
   "transport": "http-mock-tool-gateway",
   "base_url": "http://<MOCK_TOOL_BASE_URL>",
-  "call_pattern": "POST /tools/{scenario_id}/{tool_name}.{function_name}",
+  "call_pattern": "POST /tools/{scenario_id}/{tool_name}[.{function_name}]",
   "tools": [
     {
       "component": "商品",
       "risk_level": "L0 只读",
       "name": "search_catalog",
-      "functions": ["list_devices", "list_professionals", "check_credentials"]
+      "functions": [
+        "list_devices",
+        "list_professionals",
+        "check_credentials"
+      ]
     },
     {
       "component": "库存/档期",
       "risk_level": "L0 只读",
       "name": "check_availability",
-      "functions": ["check_stock", "check_availability"]
+      "functions": [
+        "check_stock",
+        "check_availability"
+      ]
     },
     {
       "component": "报价",
       "risk_level": "L0 只读",
       "name": "calculate_quote",
       "functions": ["get_price"]
+    },
+    {
+      "component": "库存/档期",
+      "risk_level": "L2/L3 写",
+      "name": "hold_inventory",
+      "functions": ["hold_inventory"]
+    },
+    {
+      "component": "库存/档期",
+      "risk_level": "L2/L3 写",
+      "name": "release_hold",
+      "functions": ["release_hold"]
+    },
+    {
+      "component": "订单/支付",
+      "risk_level": "L2/L3 写",
+      "name": "create_order_draft",
+      "functions": ["create_order_draft"]
+    },
+    {
+      "component": "订单/支付",
+      "risk_level": "L0/L1 读",
+      "name": "get_order_status",
+      "functions": ["get_order_status"]
+    },
+    {
+      "component": "政策",
+      "risk_level": "L0 只读",
+      "name": "get_policy",
+      "functions": ["get_policy"]
+    },
+    {
+      "component": "履约交接",
+      "risk_level": "L2/L3 写",
+      "name": "create_handoff",
+      "functions": ["create_handoff"]
+    },
+    {
+      "component": "质量/评估",
+      "risk_level": "L0/L1 读",
+      "name": "list_failed_cases",
+      "functions": ["list_failed_cases"]
+    },
+    {
+      "component": "质量/评估",
+      "risk_level": "L2/L3 写",
+      "name": "create_improvement_proposal",
+      "functions": ["create_improvement_proposal"]
+    },
+    {
+      "component": "质量/评估",
+      "risk_level": "L2/L3 写",
+      "name": "run_regression_suite",
+      "functions": ["run_regression_suite"]
     }
   ]
 }

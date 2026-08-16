@@ -38,5 +38,14 @@
   "quote": {
     "valid": true,
     "daily_rate": 1200
+  },
+  "policy": {
+    "refund": {
+      "desc": "7天无理由"
+    },
+    "payment": {
+      "desc": "在线支付/对公转账",
+      "advance_ratio": 0.3
+    }
   }
 }

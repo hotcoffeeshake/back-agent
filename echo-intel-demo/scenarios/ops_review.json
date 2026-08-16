@@ -1,0 +1,50 @@
+{
+  "id": "ops_review",
+  "customer": {
+    "name": "质量运营平台",
+    "contact": "平台运营同事",
+    "channel": "内部运营面板"
+  },
+  "demand": "触发平台运营闭环 4 的回归验收：抽取失败案例并提交改进提案，运行回归。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "DOC-OPS",
+      "name": "运营知识模板",
+      "type": "知识资产",
+      "purpose": "质量优化",
+      "daily_rate": 0,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "OPS-001",
+      "name": "运营分析师",
+      "role": "平台运营",
+      "credentials": [
+        "平台资质"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "实时"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 0
+  },
+  "policy": {
+    "refund": {
+      "desc": "内部流程按版本回退"
+    },
+    "payment": {
+      "desc": "测试流程不产生支付",
+      "advance_ratio": 0
+    }
+  }
+}

@@ -1,11 +1,11 @@
 {
-  "id": "req_01",
+  "id": "concurrency_test",
   "customer": {
     "name": "杭州绿田农业",
-    "contact": "王经理",
-    "channel": "官网 IM"
+    "contact": "周工",
+    "channel": "测试"
   },
-  "demand": "明天在杭州用农业无人机做 3 小时的植保作业，大概 200 亩地。",
+  "demand": "并发验收：同一时段对同一设备发起重复 hold 请求，验证超卖拦截。",
   "expected_feasible": true,
   "blocker": null,
   "devices": [
@@ -33,7 +33,10 @@
   ],
   "availability": {
     "available": true,
-    "window": "明天"
+    "window": {
+      "start": "2026-08-16T09:00:00+08:00",
+      "end": "2026-08-16T12:00:00+08:00"
+    }
   },
   "quote": {
     "valid": true,

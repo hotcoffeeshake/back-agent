@@ -1,8 +1,8 @@
 {
   "team": {
     "name": "echo-intel-demo",
-    "version": "0.2.0",
-    "description": "回声智能最小可运行 Demo：严格对齐 V2.0 客户服务 Team（4 Worker + 5 Skill），验证售前方案推荐闭环的可执行方案率≥80%。",
+    "version": "0.3.0",
+  "description": "回声智能最小可运行 Demo：严格对齐 V2.0 客户服务 Team 与平台运营 Team，验证售前到交付闭环覆盖；含多轮澄清 Human-in-the-Loop 协议（场景 1 模糊需求必须问用户，不猜测）。",
     "worker_runtime": "qwenpow(copow/QwenPaw)",
     "creation_policy": {
       "mode": "serial",
@@ -47,29 +47,97 @@
       "id": "offer_generation",
       "name": "方案生成",
       "skills": ["客服响应辅助", "可执行方案校验", "订单生命周期服务"],
-      "tools": ["search_catalog", "check_availability", "calculate_quote"]
+      "tools": [
+        "search_catalog",
+        "check_availability",
+        "calculate_quote",
+        "hold_inventory",
+        "release_hold",
+        "create_order_draft",
+        "get_order_status",
+        "get_policy",
+        "create_handoff"
+      ]
+    },
+    {
+      "id": "platform_leader",
+      "name": "平台运营负责人",
+      "skills": [],
+      "tools": []
+    },
+    {
+      "id": "data_management",
+      "name": "资料管理",
+      "skills": ["商户入驻校验", "商户数据质量检查"],
+      "tools": []
+    },
+    {
+      "id": "document_parsing",
+      "name": "文档解析",
+      "skills": ["知识修改建议"],
+      "tools": []
+    },
+    {
+      "id": "quality_analysis",
+      "name": "质检分析",
+      "skills": ["会话质量分析", "失败根因调试", "知识修改建议"],
+      "tools": ["list_failed_cases", "create_improvement_proposal"]
+    },
+    {
+      "id": "evaluation_regression",
+      "name": "评测回归",
+      "skills": ["知识回归评测"],
+      "tools": ["run_regression_suite"]
+    },
+    {
+      "id": "trend_insight",
+      "name": "趋势洞察",
+      "skills": ["服务趋势洞察"],
+      "tools": []
     }
   ],
   "skills_reuse_tier": {
     "跨行业通用": ["需求澄清"],
     "渠道适配层": ["身份与记忆解析", "客服响应辅助"],
     "行业适配层": ["可执行方案校验"],
-    "跨交易场景": ["订单生命周期服务"]
+    "跨交易场景": ["订单生命周期服务", "知识修改建议", "知识回归评测", "服务趋势洞察", "会话质量分析", "失败根因调试"],
+    "平台运营": ["商户入驻校验", "商户数据质量检查"]
   },
   "workflow": [
     {"step": 1, "agent": "customer_journey_leader", "task": "read journey state, dispatch workers"},
     {"step": 2, "agent": "identity_memory", "task": "resolve customer/merchant/channel identity"},
-    {"step": 3, "agent": "requirement_diagnosis", "task": "clarify requirement into profile"},
-    {"step": 4, "agent": "offer_generation", "task": "generate offers and verify feasibility"},
-    {"step": 5, "agent": "customer_journey_leader", "task": "compose final recommendation report"}
+    {"step": 3, "agent": "requirement_diagnosis", "task": "clarify requirement into profile; key-field missing -> status=CLARIFYING + questions (max 2 per round)"},
+    {"step": "3c", "agent": "customer_journey_leader", "task": "CLARIFICATION GATE: if status=CLARIFYING or confidence<0.7 -> pause pipeline (no offer_generation), journey=WAITING_CUSTOMER, send CLARIFYING_REPORT to Manager room; on user reply merge answer and re-dispatch requirement_diagnosis with full clarification history (loop until READY or round>max_rounds)"},
+    {"step": 4, "agent": "offer_generation", "task": "generate offers and verify feasibility (only when status=READY; missing key fields -> BLOCKED)"},
+    {"step": 5, "agent": "customer_journey_leader", "task": "compose final recommendation report (or handoff package if clarification rounds exhausted)"},
+    {"step": 6, "agent": "platform_leader", "task": "collect failed/trend events from 客户服务 Team"},
+    {"step": 7, "agent": "quality_analysis", "task": "list_failed_cases -> create_improvement_proposal"},
+    {"step": 8, "agent": "evaluation_regression", "task": "run_regression_suite on proposal"}
   ],
+  "clarification_policy": {
+    "enabled": true,
+    "max_rounds": 3,
+    "max_questions_per_round": 2,
+    "confidence_threshold": 0.7,
+    "key_fields": ["device_type", "purpose", "time_window", "location"],
+    "journey_states": ["DISCOVER", "CLARIFYING", "WAITING_CUSTOMER", "REQUIREMENTS_READY", "HUMAN_HANDOFF"],
+    "gate_rule": "customer_journey_leader MUST NOT dispatch offer_generation while requirement_diagnosis status != READY; guessing or default-filling key fields is forbidden",
+    "escalation_chain": "requirement-diagnosis -> customer-journey-leader -> Manager room -> user; user reply returns via Manager room with CLARIFYING_REPORT context",
+    "fallback": "round > max_rounds with missing key fields -> handoff_needed=true + templated handoff package (collected fields, open questions, rounds log, session summary) and terminate",
+    "test_scenario": "scenarios/req_11.json",
+    "design_doc": "CLARIFICATION-LOOP-DESIGN.md"
+  },
   "risk_policy": {
     "auto_execute": ["L0", "L1"],
     "approval_only": ["L2", "L3"]
   },
-  "kpi": {
-    "name": "可执行方案率",
-    "target": ">= 80%",
-    "formula": "feasible_offers / total_test_demands"
-  }
+  "kpi": [
+    {"name": "可执行方案率", "target": ">= 80%"},
+    {"name": "并发零超卖", "target": "=0"},
+    {"name": "待支付订单创建成功率", "target": "=100%"},
+    {"name": "幂等正确率", "target": "=100%"},
+    {"name": "改进提案覆盖", "target": "每闭环>=1 且可回归"},
+    {"name": "关键字段猜测次数", "target": "=0（模糊需求必须触发 CLARIFYING 问用户）"},
+    {"name": "应澄清未澄清率", "target": "=0"}
+  ]
 }

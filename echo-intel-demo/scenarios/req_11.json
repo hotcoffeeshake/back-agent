@@ -1,0 +1,54 @@
+{
+  "id": "req_11",
+  "customer": {
+    "name": "某新客户（首次进线）",
+    "contact": "未留姓名",
+    "channel": "官网 IM"
+  },
+  "demand": "想用无人机做个勘测项目。",
+  "expected_feasible": true,
+  "expected_flow": "CLARIFYING 多轮澄清（验证 Human-in-the-Loop 门禁）→ 补全后出可执行方案",
+  "expected_clarification_rounds": 1,
+  "blocker": null,
+  "clarification_test": {
+    "missing_key_fields": ["time_window", "location"],
+    "detectable_fields": {
+      "device_type": "测绘无人机",
+      "purpose": "勘测"
+    },
+    "round1_answer": "补充：本周六，苏州。",
+    "round1_answer_makes_ready": true,
+    "note": "时间窗与地点无法从目录或文本推断，必须问用户；目录候选存在但不完整数据不能替代澄清。若要验证 3 轮超限接管包，用户连续回复答非所问即可（预期第 4 轮前输出接管包终止）。"
+  },
+  "devices": [
+    {
+      "id": "SURV-P4",
+      "name": "测绘无人机 P4",
+      "type": "测绘无人机",
+      "purpose": "地形勘测",
+      "daily_rate": 1200,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-002",
+      "name": "李工",
+      "role": "测绘飞手",
+      "credentials": [
+        "超视距证",
+        "测绘资质"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "本周六"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 1200
+  }
+}
