@@ -19,7 +19,7 @@
 - `IMPLEMENTATION_PLAN.md`：**修改后的实施档案**，含 §8 修订记录（作者 **@hotcoffeeshake**，2026-08-16）
 - `AGENTLOOP-ALIGNMENT.md`：与阿里云 AgentLoop 的对齐分析
 
-## ⚠️ Mock 工具命名差异（与根目录规范不统一，需对齐）
+## ✅ Mock 工具命名已对齐（规范名）
 
 根目录 `src/mock-mcp.js` 的 `MockBusinessMcpGateway` 定义了**规范工具名**（与 `contracts/mcp-openapi.yaml` 一致）：
 
@@ -31,7 +31,9 @@ hold_inventory(inventory:hold,写)    release_hold(inventory:release,写)
 create_order_draft(order:draft:create,写)  create_handoff(handoff:create,写)
 ```
 
-而本目录 `tools/` 落地的 Mock 名为 **`catalog` / `inventory_schedule` / `quote`**（早期 `mock_*` 前缀已按方案 §5 重命名），**与上述规范名并不一致**。两套实现对接同一业务，但工具标识未对齐——这是后续合并/复用时必须统一的点（建议本目录工具名改为规范 `search_catalog` / `check_availability` / `calculate_quote` 等）。
+本目录 `tools/` 落地的 3 个 **L0 只读** Mock 现已**对齐规范名**：`catalog` → `search_catalog`、`inventory_schedule` → `check_availability`、`quote` → `calculate_quote`（调用形态保持本变体的 `POST /tools/{scenario_id}/{tool_name}.{function_name}`，即 `search_catalog.list_devices` 等）。涉及的 `tool_catalog.json` / `mock_tools.py` / `mock_tool_server.py` / 两个 Agent 的 `## Tools` / 两个 Skill 的 `## 依赖` / `at/team_spec.json` / `at/create_agents_messages*.md` / `README.md` / `IMPLEMENTATION_PLAN.md` 均已同步改名。
+
+> 注：规范真名集另含 7 个写类/其他工具（`get_product_detail` / `get_policy` / `get_order_status` / `hold_inventory` / `release_hold` / `create_order_draft` / `create_handoff`，以及 3 个质量/评测类），本 **L0+L1 Demo 仅实现 3 个读类工具**，其余未实现——属范围差异，非命名差异。
 
 ## 已知限制（未随本包上传）
 

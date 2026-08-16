@@ -36,9 +36,9 @@ class LocalMockTools:
     """回声智能售前闭环（闭环 1）的本地 Mock 工具。
 
     工具名严格对齐 V2.0 表格 65「MCP/适配器层」组件 + 表格 129「L0 只读」：
-      - catalog（商品）: list_devices / list_professionals / check_credentials
-      - inventory_schedule（库存/档期）: check_stock / check_availability
-      - quote（报价）: get_price
+      - search_catalog（商品/目录，L0 只读）: list_devices / list_professionals / check_credentials
+      - check_availability（库存/档期，L0 只读）: check_stock / check_availability
+      - calculate_quote（报价，L0 只读）: get_price
     覆盖表格 81「可执行方案校验」五要素：设备、专业人员、资质、价格、档期。
     """
 
@@ -58,13 +58,13 @@ class LocalMockTools:
         )
         return result
 
-    # ---- catalog（商品，L0 只读）----
+    # ---- search_catalog（商品/目录，L0 只读）----
 
     def list_devices(self) -> List[Dict[str, Any]]:
-        return self._record("catalog.list_devices", {}, self.scenario.get("devices", []))
+        return self._record("search_catalog.list_devices", {}, self.scenario.get("devices", []))
 
     def list_professionals(self) -> List[Dict[str, Any]]:
-        return self._record("catalog.list_professionals", {}, self.scenario.get("professionals", []))
+        return self._record("search_catalog.list_professionals", {}, self.scenario.get("professionals", []))
 
     def check_credentials(self, professional_id: Optional[str] = None) -> Dict[str, Any]:
         pro = next(
@@ -73,12 +73,12 @@ class LocalMockTools:
         )
         if pro is None:
             return self._record(
-                "catalog.check_credentials",
+                "search_catalog.check_credentials",
                 {"professional_id": professional_id},
                 {"professional_id": professional_id, "credential_ok": False, "reason": "professional not found"},
             )
         return self._record(
-            "catalog.check_credentials",
+            "search_catalog.check_credentials",
             {"professional_id": professional_id},
             {
                 "professional_id": professional_id,
@@ -87,18 +87,18 @@ class LocalMockTools:
             },
         )
 
-    # ---- inventory_schedule（库存/档期，L0 只读）----
+    # ---- check_availability（库存/档期，L0 只读）----
 
     def check_stock(self, device_id: Optional[str] = None) -> Dict[str, Any]:
         dev = next((d for d in self.scenario.get("devices", []) if d.get("id") == device_id), None)
         if dev is None:
             return self._record(
-                "inventory_schedule.check_stock",
+                "check_availability.check_stock",
                 {"device_id": device_id},
                 {"device_id": device_id, "in_stock": False, "reason": "device not found"},
             )
         return self._record(
-            "inventory_schedule.check_stock",
+            "check_availability.check_stock",
             {"device_id": device_id},
             {"device_id": device_id, "in_stock": bool(dev.get("in_stock"))},
         )
@@ -106,17 +106,17 @@ class LocalMockTools:
     def check_availability(self, time_window: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         avail = self.scenario.get("availability", {})
         return self._record(
-            "inventory_schedule.check_availability",
+            "check_availability.check_availability",
             {"time_window": time_window},
             {"available": bool(avail.get("available")), "window": avail.get("window", "")},
         )
 
-    # ---- quote（报价，L0 只读）----
+    # ---- calculate_quote（报价，L0 只读）----
 
     def get_price(self, device_id: Optional[str] = None, professional_id: Optional[str] = None) -> Dict[str, Any]:
         quote = self.scenario.get("quote", {})
         return self._record(
-            "quote.get_price",
+            "calculate_quote.get_price",
             {"device_id": device_id, "professional_id": professional_id},
             {
                 "device_id": device_id,

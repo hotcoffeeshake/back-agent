@@ -78,7 +78,7 @@ Skill 生命周期（V2.0 表格 192，7 阶段）：**草稿 → 开发 → 评
 
 ## 六、可执行方案率 ≥ 80% 测试方案
 
-- **判定口径**：方案生成 Worker 调用「可执行方案校验」Skill，经 `catalog.check_credentials`（资质齐全）、`inventory_schedule.check_stock`（设备在库）、`inventory_schedule.check_availability`（人员有档期）、`quote.get_price`（价格有效）四条件同时成立时判定 `feasible = true`。
+- **判定口径**：方案生成 Worker 调用「可执行方案校验」Skill，经 `search_catalog.check_credentials`（资质齐全）、`check_availability.check_stock`（设备在库）、`check_availability.check_availability`（人员有档期）、`calculate_quote.get_price`（价格有效）四条件同时成立时判定 `feasible = true`。
 - **可执行方案率** = 可执行方案数 ÷ 测试需求总数。
 - **测试需求集**：10 条（8 可执行 + 2 不可执行），详见 `at/test_offer_rate_message.md`。8 ÷ 10 = **80%**，满足达标线。
 

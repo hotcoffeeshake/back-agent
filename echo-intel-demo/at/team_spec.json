@@ -41,13 +41,13 @@
       "id": "requirement_diagnosis",
       "name": "需求诊断",
       "skills": ["需求澄清"],
-      "tools": ["catalog"]
+      "tools": ["search_catalog"]
     },
     {
       "id": "offer_generation",
       "name": "方案生成",
       "skills": ["客服响应辅助", "可执行方案校验", "订单生命周期服务"],
-      "tools": ["catalog", "inventory_schedule", "quote"]
+      "tools": ["search_catalog", "check_availability", "calculate_quote"]
     }
   ],
   "skills_reuse_tier": {

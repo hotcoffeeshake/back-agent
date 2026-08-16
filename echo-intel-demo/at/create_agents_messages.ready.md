@@ -94,8 +94,8 @@ inputs:
 skills:
 - 需求澄清: 将模糊表达转结构化需求；识别缺失字段并追问；判断阶段、意图、情绪、风险、允许动作和接管原因。
 tool contracts:
-- catalog.list_devices: POST http://host.docker.internal:18089/tools/{scenario_id}/catalog.list_devices body {}
-- catalog.list_professionals: POST http://host.docker.internal:18089/tools/{scenario_id}/catalog.list_professionals body {}
+- search_catalog.list_devices: POST http://host.docker.internal:18089/tools/{scenario_id}/search_catalog.list_devices body {}
+- search_catalog.list_professionals: POST http://host.docker.internal:18089/tools/{scenario_id}/search_catalog.list_professionals body {}
 output contract:
 {
   "scenario_id": "req_xx",
@@ -136,18 +136,18 @@ role: 方案生成
 mission: 检索多商户候选，绑定证据；实时校验设备、专业人员、资质、价格和档期；生成报价、接管包和 Copilot 建议。
 inputs:
 - requirement_profile and risk_context from requirement-diagnosis
-- real-time catalog/inventory_schedule/quote data
+- real-time search_catalog/check_availability/calculate_quote data
 skills:
 - 客服响应辅助: 为人工提供推荐话术、政策依据、风险提示和动作预览；生成完整接管包。仅建议，不发送。
 - 可执行方案校验: 实时核验设备、专业人员、资质、价格和档期，确认方案是否可执行。
 - 订单生命周期服务: 支付后受控锁档、建单、幂等与失败补偿；查询订单、变更、取消、履约异常与后续动作。本 Demo 不触发支付/锁档写入。
 tool contracts:
-- catalog.list_devices: POST http://host.docker.internal:18089/tools/{scenario_id}/catalog.list_devices body {}
-- catalog.list_professionals: POST http://host.docker.internal:18089/tools/{scenario_id}/catalog.list_professionals body {}
-- catalog.check_credentials: POST http://host.docker.internal:18089/tools/{scenario_id}/catalog.check_credentials body {"professional_id":null}
-- inventory_schedule.check_stock: POST http://host.docker.internal:18089/tools/{scenario_id}/inventory_schedule.check_stock body {"device_id":null}
-- inventory_schedule.check_availability: POST http://host.docker.internal:18089/tools/{scenario_id}/inventory_schedule.check_availability body {"time_window":{}}
-- quote.get_price: POST http://host.docker.internal:18089/tools/{scenario_id}/quote.get_price body {"device_id":"","professional_id":""}
+- search_catalog.list_devices: POST http://host.docker.internal:18089/tools/{scenario_id}/search_catalog.list_devices body {}
+- search_catalog.list_professionals: POST http://host.docker.internal:18089/tools/{scenario_id}/search_catalog.list_professionals body {}
+- search_catalog.check_credentials: POST http://host.docker.internal:18089/tools/{scenario_id}/search_catalog.check_credentials body {"professional_id":null}
+- check_availability.check_stock: POST http://host.docker.internal:18089/tools/{scenario_id}/check_availability.check_stock body {"device_id":null}
+- check_availability.check_availability: POST http://host.docker.internal:18089/tools/{scenario_id}/check_availability.check_availability body {"time_window":{}}
+- calculate_quote.get_price: POST http://host.docker.internal:18089/tools/{scenario_id}/calculate_quote.get_price body {"device_id":"","professional_id":""}
 output contract:
 {
   "offers": [

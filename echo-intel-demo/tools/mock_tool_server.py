@@ -26,12 +26,12 @@ def reset_state(scenario_id: str) -> Dict[str, Any]:
 
 def call_tool(tools: LocalMockTools, name: str, payload: Dict[str, Any]) -> Any:
     handlers: Dict[str, Callable[[], Any]] = {
-        "catalog.list_devices": lambda: tools.list_devices(),
-        "catalog.list_professionals": lambda: tools.list_professionals(),
-        "catalog.check_credentials": lambda: tools.check_credentials(payload.get("professional_id")),
-        "inventory_schedule.check_stock": lambda: tools.check_stock(payload.get("device_id")),
-        "inventory_schedule.check_availability": lambda: tools.check_availability(payload.get("time_window")),
-        "quote.get_price": lambda: tools.get_price(payload.get("device_id"), payload.get("professional_id")),
+        "search_catalog.list_devices": lambda: tools.list_devices(),
+        "search_catalog.list_professionals": lambda: tools.list_professionals(),
+        "search_catalog.check_credentials": lambda: tools.check_credentials(payload.get("professional_id")),
+        "check_availability.check_stock": lambda: tools.check_stock(payload.get("device_id")),
+        "check_availability.check_availability": lambda: tools.check_availability(payload.get("time_window")),
+        "calculate_quote.get_price": lambda: tools.get_price(payload.get("device_id"), payload.get("professional_id")),
     }
     if name not in handlers:
         available = ", ".join(sorted(handlers))

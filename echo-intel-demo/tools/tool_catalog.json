@@ -1,5 +1,5 @@
 {
-  "_note": "严格对齐文档：组件名取表格65「MCP/适配器层」，风险分级取表格129（L0 只读）。仅保留闭环1（售前方案推荐，止于方案）必需的工具；锁档/草稿单、订单/支付/物流、接管、审批、知识工具等组件属闭环2/3/4，本 demo 忽略。工具名(name)为 Demo 层实现，函数覆盖表格81「可执行方案校验」五要素：设备、专业人员、资质、价格、档期。",
+  "_note": "严格对齐文档：组件名取表格65「MCP/适配器层」，风险分级取表格129（L0 只读）。仅保留闭环1（售前方案推荐，止于方案）必需的工具；锁档/草稿单、订单/支付/物流、接管、审批、知识工具等组件属闭环2/3/4，本 demo 忽略。工具名(name)已对齐仓库根目录 MockBusinessMcpGateway 规范名（search_catalog / check_availability / calculate_quote，与 contracts/mcp-openapi.yaml 一致）；函数覆盖表格81「可执行方案校验」五要素：设备、专业人员、资质、价格、档期。",
   "transport": "http-mock-tool-gateway",
   "base_url": "http://<MOCK_TOOL_BASE_URL>",
   "call_pattern": "POST /tools/{scenario_id}/{tool_name}.{function_name}",
@@ -7,19 +7,19 @@
     {
       "component": "商品",
       "risk_level": "L0 只读",
-      "name": "catalog",
+      "name": "search_catalog",
       "functions": ["list_devices", "list_professionals", "check_credentials"]
     },
     {
       "component": "库存/档期",
       "risk_level": "L0 只读",
-      "name": "inventory_schedule",
+      "name": "check_availability",
       "functions": ["check_stock", "check_availability"]
     },
     {
       "component": "报价",
       "risk_level": "L0 只读",
-      "name": "quote",
+      "name": "calculate_quote",
       "functions": ["get_price"]
     }
   ]

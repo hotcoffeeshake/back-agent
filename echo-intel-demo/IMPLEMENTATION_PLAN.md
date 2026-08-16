@@ -110,7 +110,7 @@
 
 对照文档原文，此前 `echo-intel-demo/` 产出存在以下两处 Demo 层自创，需修正以严格对齐：
 
-1. **工具命名分叉（已修正）**：原 `mock_ticket/mock_catalog/mock_schedule/...` 为自造英文名，已改为严格按文档「表格 65 适配器层组件 + 表格 129 L0 只读」组织的 3 个组件——`catalog`（商品：设备/专业人员目录 + 资质）、`inventory_schedule`（库存/档期）、`quote`（报价），全部 L0 只读，覆盖表格 81「可执行方案校验」五要素（设备、专业人员、资质、价格、档期）。锁档/草稿单、订单/支付/物流、接管、审批、知识工具属闭环 2/3/4，本 Demo 忽略。
+1. **工具命名分叉（已修正）**：原 `mock_ticket/mock_catalog/mock_schedule/...` 为自造英文名，已改为严格按文档「表格 65 适配器层组件 + 表格 129 L0 只读」组织的 3 个组件；**组件名进一步对齐仓库根目录 `MockBusinessMcpGateway` 规范名**——`search_catalog`（商品：设备/专业人员目录 + 资质，对应 catalog:read）、`check_availability`（库存/档期，对应 inventory:read）、`calculate_quote`（报价，对应 pricing:read），全部 L0 只读，覆盖表格 81「可执行方案校验」五要素（设备、专业人员、资质、价格、档期）。锁档/草稿单、订单/支付/物流、接管、审批、知识工具属闭环 2/3/4，本 Demo 忽略（注：规范真名集另有 hold_inventory / release_hold / create_order_draft / create_handoff 等写类工具，本 L0+L1 Demo 不实现）。
 2. **「10 条测试需求」未标注出处（已修正）**：`at/test_offer_rate_message.md` 已补注「Demo 层约定：条数可调整，对应文档第 12.3 节工具模拟/离线回放」。
 
 > 其余产出（README 的 Worker/Skill 对齐表格 74/81、5 个 SKILL.md 对齐表格 189 规格字段、复用层级对齐表格 81、订单生命周期服务口径保留不触发写入）**已严格对齐，无需改动**。
