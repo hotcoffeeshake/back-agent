@@ -1,0 +1,42 @@
+{
+  "id": "req_09",
+  "customer": {
+    "name": "杭州某农业合作社",
+    "contact": "钱先生",
+    "channel": "官网 IM"
+  },
+  "demand": "明天在杭州用「DJS-AgriX3 已停产型号」无人机做植保作业。我指定这个型号，其他不要。",
+  "expected_feasible": false,
+  "blocker": "设备无库存（已停产型号）",
+  "devices": [
+    {
+      "id": "DJS-AgriX3",
+      "name": "DJS-AgriX3（已停产）",
+      "type": "农业无人机",
+      "purpose": "植保",
+      "daily_rate": 0,
+      "in_stock": false
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-009",
+      "name": "钱师傅",
+      "role": "农业飞手",
+      "credentials": [
+        "超视距证",
+        "农业植保证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "明天"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 0
+  }
+}

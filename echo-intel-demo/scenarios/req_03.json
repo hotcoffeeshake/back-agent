@@ -1,0 +1,41 @@
+{
+  "id": "req_03",
+  "customer": {
+    "name": "上海智联园区",
+    "contact": "陈主任",
+    "channel": "H5"
+  },
+  "demand": "下周三在上海用配送无人机做园区内的配送演示，半天时间。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "DELV-X1",
+      "name": "配送无人机 X1",
+      "type": "配送无人机",
+      "purpose": "园区配送",
+      "daily_rate": 600,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-003",
+      "name": "陈师傅",
+      "role": "配送飞手",
+      "credentials": [
+        "超视距证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "下周三"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 600
+  }
+}

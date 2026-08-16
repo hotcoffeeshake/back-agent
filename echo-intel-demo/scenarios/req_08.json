@@ -1,0 +1,42 @@
+{
+  "id": "req_08",
+  "customer": {
+    "name": "绍兴城建",
+    "contact": "郑工",
+    "channel": "App"
+  },
+  "demand": "下个月在绍兴用测绘无人机做大型工程测绘，工期约两周，需要按天结算。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "SURV-P4",
+      "name": "测绘无人机 P4",
+      "type": "测绘无人机",
+      "purpose": "工程测绘",
+      "daily_rate": 1200,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-008",
+      "name": "郑师傅",
+      "role": "测绘飞手",
+      "credentials": [
+        "超视距证",
+        "测绘资质"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "下个月"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 1200
+  }
+}

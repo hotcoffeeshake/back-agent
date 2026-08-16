@@ -1,0 +1,75 @@
+{
+  "team": {
+    "name": "echo-intel-demo",
+    "version": "0.2.0",
+    "description": "回声智能最小可运行 Demo：严格对齐 V2.0 客户服务 Team（4 Worker + 5 Skill），验证售前方案推荐闭环的可执行方案率≥80%。",
+    "worker_runtime": "qwenpow(copow/QwenPaw)",
+    "creation_policy": {
+      "mode": "serial",
+      "order": ["identity_memory", "requirement_diagnosis", "offer_generation", "team"],
+      "rule": "Create the next business Worker only after the previous Worker is created and verified healthy. During Team creation, manager must create customer-journey-leader as a dedicated TeamLeader Worker (role = Customer Journey Leader)."
+    },
+    "team_leader": {
+      "id": "customer_journey_leader",
+      "name": "customer-journey-leader",
+      "role": "Customer Journey Leader",
+      "creation": "created by manager during Team creation",
+      "rule": "Must be created as a new independent Worker and designated as TeamLeader. Do not designate any business Worker as leader."
+    },
+    "agent_spec_source": "inline messages in at/create_agents_messages.md",
+    "test_task_source": "10 test demands in at/test_offer_rate_message.md",
+    "task_submission_policy": {
+      "room": "Manager 房间（Manager: default）",
+      "mention": "（无需 @，将需求整体发给 Manager 房间即可）",
+      "rule": "AgentTeams 的 Worker/Leader 为被动调度：用户必须在 Manager 房间发送需求，由 Manager 调度 customer-journey-leader，Leader 再调度各业务 Worker。不要在 Team 房间直接 @leader（不会触发响应）。逐条发送，等报告输出后再发下一条。详见 at/send_to_manager.md。",
+      "note": "本字段为回填修正（2026-08-16 @hotcoffeeshake）：原「Team 房间 @leader」描述与运行行为不一致，真实机制以 at/send_to_manager.md 为准。"
+    },
+    "tool_gateway": {
+      "transport": "http",
+      "base_url": "http://<MOCK_TOOL_BASE_URL>",
+      "call_pattern": "POST /tools/{scenario_id}/{tool_name}.{function_name}"
+    }
+  },
+  "agents": [
+    {
+      "id": "identity_memory",
+      "name": "身份与记忆",
+      "skills": ["身份与记忆解析"],
+      "tools": []
+    },
+    {
+      "id": "requirement_diagnosis",
+      "name": "需求诊断",
+      "skills": ["需求澄清"],
+      "tools": ["catalog"]
+    },
+    {
+      "id": "offer_generation",
+      "name": "方案生成",
+      "skills": ["客服响应辅助", "可执行方案校验", "订单生命周期服务"],
+      "tools": ["catalog", "inventory_schedule", "quote"]
+    }
+  ],
+  "skills_reuse_tier": {
+    "跨行业通用": ["需求澄清"],
+    "渠道适配层": ["身份与记忆解析", "客服响应辅助"],
+    "行业适配层": ["可执行方案校验"],
+    "跨交易场景": ["订单生命周期服务"]
+  },
+  "workflow": [
+    {"step": 1, "agent": "customer_journey_leader", "task": "read journey state, dispatch workers"},
+    {"step": 2, "agent": "identity_memory", "task": "resolve customer/merchant/channel identity"},
+    {"step": 3, "agent": "requirement_diagnosis", "task": "clarify requirement into profile"},
+    {"step": 4, "agent": "offer_generation", "task": "generate offers and verify feasibility"},
+    {"step": 5, "agent": "customer_journey_leader", "task": "compose final recommendation report"}
+  ],
+  "risk_policy": {
+    "auto_execute": ["L0", "L1"],
+    "approval_only": ["L2", "L3"]
+  },
+  "kpi": {
+    "name": "可执行方案率",
+    "target": ">= 80%",
+    "formula": "feasible_offers / total_test_demands"
+  }
+}

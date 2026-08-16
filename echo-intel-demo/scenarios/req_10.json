@@ -1,0 +1,39 @@
+{
+  "id": "req_10",
+  "customer": {
+    "name": "苏州某电商",
+    "contact": "林先生",
+    "channel": "小程序"
+  },
+  "demand": "今天立即在苏州用配送无人机做投递，而且必须由「高级飞手」执行，普通飞手不行。",
+  "expected_feasible": false,
+  "blocker": "高级飞手无档期且资质不足",
+  "devices": [
+    {
+      "id": "DELV-X1",
+      "name": "配送无人机 X1",
+      "type": "配送无人机",
+      "purpose": "投递",
+      "daily_rate": 600,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-010",
+      "name": "林师傅",
+      "role": "高级飞手",
+      "credentials": [],
+      "credential_ok": false,
+      "available": false
+    }
+  ],
+  "availability": {
+    "available": false,
+    "window": "今天"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 600
+  }
+}

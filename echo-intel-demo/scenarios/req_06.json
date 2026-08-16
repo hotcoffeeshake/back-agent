@@ -1,0 +1,42 @@
+{
+  "id": "req_06",
+  "customer": {
+    "name": "宁波电力",
+    "contact": "周工",
+    "channel": "小程序"
+  },
+  "demand": "这个周末在宁波用巡检无人机做电网线路巡检，两条线路大约 40 公里。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "INSP-G2",
+      "name": "巡检无人机 G2",
+      "type": "巡检无人机",
+      "purpose": "电网巡检",
+      "daily_rate": 1000,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-006",
+      "name": "周师傅",
+      "role": "巡检飞手",
+      "credentials": [
+        "超视距证",
+        "电力巡检证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "本周末"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 1000
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "req_02",
+  "customer": {
+    "name": "苏州勘测院",
+    "contact": "李工",
+    "channel": "小程序"
+  },
+  "demand": "本周六在苏州用测绘无人机做一次地形勘测，面积约 5 平方公里，需要带正射影像。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "SURV-P4",
+      "name": "测绘无人机 P4",
+      "type": "测绘无人机",
+      "purpose": "地形勘测",
+      "daily_rate": 1200,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-002",
+      "name": "李工",
+      "role": "测绘飞手",
+      "credentials": [
+        "超视距证",
+        "测绘资质"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "本周六"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 1200
+  }
+}

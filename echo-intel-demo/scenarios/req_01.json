@@ -1,0 +1,42 @@
+{
+  "id": "req_01",
+  "customer": {
+    "name": "杭州绿田农业",
+    "contact": "王经理",
+    "channel": "官网 IM"
+  },
+  "demand": "明天在杭州用农业无人机做 3 小时的植保作业，大概 200 亩地。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "AGRI-M300",
+      "name": "农业无人机 M300",
+      "type": "农业无人机",
+      "purpose": "植保",
+      "daily_rate": 800,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-001",
+      "name": "张师傅",
+      "role": "农业飞手",
+      "credentials": [
+        "超视距证",
+        "农业植保证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "明天"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 800
+  }
+}

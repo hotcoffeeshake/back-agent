@@ -1,0 +1,42 @@
+{
+  "id": "req_05",
+  "customer": {
+    "name": "杭州应急办",
+    "contact": "孙主任",
+    "channel": "官网 IM"
+  },
+  "demand": "明天在杭州用应急救援无人机做一次演练，需要热成像和喊话功能。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "RESC-E1",
+      "name": "应急救援无人机 E1",
+      "type": "应急救援无人机",
+      "purpose": "应急演练",
+      "daily_rate": 1500,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-005",
+      "name": "孙师傅",
+      "role": "救援飞手",
+      "credentials": [
+        "超视距证",
+        "应急救援证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "明天"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 1500
+  }
+}

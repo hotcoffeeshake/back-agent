@@ -1,0 +1,42 @@
+{
+  "id": "req_07",
+  "customer": {
+    "name": "嘉兴物流",
+    "contact": "吴经理",
+    "channel": "H5"
+  },
+  "demand": "本周内在嘉兴用物流无人机做短途运输，单程 15 公里，一天 20 架次。",
+  "expected_feasible": true,
+  "blocker": null,
+  "devices": [
+    {
+      "id": "CARGO-L5",
+      "name": "物流无人机 L5",
+      "type": "物流无人机",
+      "purpose": "短途运输",
+      "daily_rate": 700,
+      "in_stock": true
+    }
+  ],
+  "professionals": [
+    {
+      "id": "FP-007",
+      "name": "吴师傅",
+      "role": "物流飞手",
+      "credentials": [
+        "超视距证",
+        "物流运输证"
+      ],
+      "credential_ok": true,
+      "available": true
+    }
+  ],
+  "availability": {
+    "available": true,
+    "window": "本周内"
+  },
+  "quote": {
+    "valid": true,
+    "daily_rate": 700
+  }
+}
