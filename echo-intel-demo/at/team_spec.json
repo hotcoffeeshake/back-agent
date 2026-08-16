@@ -7,8 +7,12 @@
     "creation_policy": {
       "mode": "serial",
       "order": ["identity_memory", "requirement_diagnosis", "offer_generation", "team"],
-      "rule": "Create the next business Worker only after the previous Worker is created and verified healthy. During Team creation, manager must create customer-journey-leader as a dedicated TeamLeader Worker (role = Customer Journey Leader)."
+      "rule": "Create the next business Worker only after the previous Worker is created and verified healthy. During Team creation, manager must create customer-journey-leader as a dedicated TeamLeader Worker (role = Customer Journey Leader).",
+      "team_field_required": true,
+      "team_field_note": "CRITICAL: 3 个业务 Worker 创建时必须显式带 team=echo-intel-demo（如 `hiclaw create worker --team echo-intel-demo`），使其 worker 资源的 team 字段非空。否则其 filesync 前缀落到根 shared/，而 Leader（team=echo-intel-demo）落在 teams/echo-intel-demo/shared/，汇总报告第 3 次仍未落到约定路径（req_01/req_02/req_11 已三次复现）。创建后须 `hiclaw get workers <name>` 校验 team 字段非空。"
     },
+    "shared_prefix": "teams/echo-intel-demo/shared",
+    "shared_prefix_note": "本 Team 统一使用团队共享前缀 teams/echo-intel-demo/shared（filesync 按各 worker 自身 team 字段推导）。约定任务文件路径：teams/echo-intel-demo/shared/tasks/{scenario_id}/result.md。根 shared/ 仅用于非 team 成员（如 Manager 全局视图），团队内部交换一律走 teams/ 前缀。",
     "team_leader": {
       "id": "customer_journey_leader",
       "name": "customer-journey-leader",

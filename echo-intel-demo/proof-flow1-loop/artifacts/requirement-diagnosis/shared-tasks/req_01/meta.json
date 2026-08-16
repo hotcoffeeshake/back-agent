@@ -1,0 +1,16 @@
+{
+  "task_id": "req_01",
+  "title": "预约需求处理：杭州绿田农业植保作业（200亩/3小时）",
+  "type": "finite",
+  "assigned_to": "customer-journey-leader",
+  "delegated_to_team": "echo-intel-demo",
+  "room_id": "!Ud6DV9sJzMC8YHT6EU:matrix-local.hiclaw.io:18080",
+  "status": "dispatched",
+  "dispatched_at": "2026-08-15T19:49:17Z",
+  "redispatch_at": "2026-08-15T20:00:00Z",
+  "scenario_id": "req_01",
+  "customer": "杭州绿田农业",
+  "contact": "王经理",
+  "channel": "官网 IM",
+  "request": "明天在杭州用农业无人机做 3 小时的植保作业，大概 200 亩地。"
+}

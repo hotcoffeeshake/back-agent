@@ -1,0 +1,10 @@
+{
+  "task_id": "req01-plant-protection-20260815-200110-01",
+  "project_id": "req01-plant-protection-20260815-200110",
+  "task_title": "身份识别与记忆调取（identity-memory）",
+  "assigned_to": "identity-memory",
+  "room_id": "room:!yzjYJTyDd1v5wqyWc8:matrix-local.hiclaw.io:18080",
+  "status": "assigned",
+  "depends_on": [],
+  "assigned_at": "2026-08-15T20:01:32Z"
+}

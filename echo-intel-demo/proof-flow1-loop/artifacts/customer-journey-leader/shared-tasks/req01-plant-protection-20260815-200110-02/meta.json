@@ -1,0 +1,12 @@
+{
+  "task_id": "req01-plant-protection-20260815-200110-02",
+  "project_id": "req01-plant-protection-20260815-200110",
+  "task_title": "需求画像与诊断（requirement-diagnosis）",
+  "assigned_to": "requirement-diagnosis",
+  "room_id": "room:!yzjYJTyDd1v5wqyWc8:matrix-local.hiclaw.io:18080",
+  "status": "assigned",
+  "depends_on": [
+    "req01-plant-protection-20260815-200110-01"
+  ],
+  "assigned_at": "2026-08-15T20:10:29Z"
+}

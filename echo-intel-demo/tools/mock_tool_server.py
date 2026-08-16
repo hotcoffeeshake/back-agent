@@ -25,6 +25,7 @@ def reset_state(scenario_id: str) -> Dict[str, Any]:
 
 
 def call_tool(tools: LocalMockTools, name: str, payload: Dict[str, Any]) -> Any:
+    tool_name = name.rsplit(".", 1)[-1]
     handlers: Dict[str, Callable[[], Any]] = {
         "search_catalog.list_devices": lambda: tools.list_devices(),
         "search_catalog.list_professionals": lambda: tools.list_professionals(),
@@ -32,11 +33,65 @@ def call_tool(tools: LocalMockTools, name: str, payload: Dict[str, Any]) -> Any:
         "check_availability.check_stock": lambda: tools.check_stock(payload.get("device_id")),
         "check_availability.check_availability": lambda: tools.check_availability(payload.get("time_window")),
         "calculate_quote.get_price": lambda: tools.get_price(payload.get("device_id"), payload.get("professional_id")),
+        "hold_inventory": lambda: tools.hold_inventory(
+            payload.get("tenant_id"),
+            payload.get("conversation_id"),
+            payload.get("offer_id"),
+            payload.get("state_version"),
+            payload.get("confirmation_token"),
+            payload.get("idempotency_key"),
+            payload.get("payload"),
+        ),
+        "release_hold": lambda: tools.release_hold(
+            payload.get("tenant_id"),
+            payload.get("hold_id"),
+            payload.get("idempotency_key"),
+        ),
+        "create_order_draft": lambda: tools.create_order_draft(
+            payload.get("tenant_id"),
+            payload.get("conversation_id"),
+            payload.get("offer_id"),
+            payload.get("state_version"),
+            payload.get("confirmation_token"),
+            payload.get("idempotency_key"),
+        ),
+        "get_order_status": lambda: tools.get_order_status(
+            payload.get("tenant_id"),
+            payload.get("order_id"),
+        ),
+        "get_policy": lambda: tools.get_policy(
+            payload.get("tenant_id"),
+            payload.get("merchant_id"),
+            payload.get("query"),
+        ),
+        "create_handoff": lambda: tools.create_handoff(
+            payload.get("tenant_id"),
+            payload.get("conversation_id"),
+            payload.get("reason"),
+            payload.get("packet"),
+        ),
+        "list_failed_cases": lambda: tools.list_failed_cases(
+            payload.get("tenant_id"),
+            payload.get("since"),
+        ),
+        "create_improvement_proposal": lambda: tools.create_improvement_proposal(
+            payload.get("tenant_id"),
+            payload.get("trace_id"),
+            payload.get("diff"),
+            payload.get("idempotency_key"),
+        ),
+        "run_regression_suite": lambda: tools.run_regression_suite(
+            payload.get("tenant_id"),
+            payload.get("proposal_id"),
+            payload.get("dataset_version"),
+        ),
     }
-    if name not in handlers:
-        available = ", ".join(sorted(handlers))
-        raise ValueError(f"unknown tool call '{name}', available: {available}")
-    return handlers[name]()
+    if name in handlers:
+        return handlers[name]()
+    if tool_name in handlers:
+        return handlers[tool_name]()
+    available = ", ".join(sorted(handlers))
+    raise ValueError(f"unknown tool call '{name}', available: {available}")
 
 
 class MockToolHandler(BaseHTTPRequestHandler):

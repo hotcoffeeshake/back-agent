@@ -1,5 +1,7 @@
 # 回声智能 · 可执行方案率测试任务消息
 
+> ⚠️ 2026-08-16 注：本文件的「Team 房间 @leader」用法已被证实与运行行为不一致，**正式测试以 at/send_to_manager.md 为准**（Manager 房间发送，含需求 11 多轮澄清测试）。本文件仅留作历史参考。
+
 3 个业务 Worker（identity-memory / requirement-diagnosis / offer-generation）、独立 TeamLeader Worker `customer-journey-leader` 以及 `echo-intel-demo` Team 创建完成后，在 Element Web/Matrix 会话列表中找到名称以 `Team` 开头、对应 `echo-intel-demo` 的 Team 房间。
 
 进入 Team 房间后，在输入框先输入并选中 `@<team_leader_name>`，再把下面的测试需求复制到这条 @ 消息里发送。不要把测试需求发给 `manager`。

@@ -197,12 +197,13 @@ Team 创建要求：
 - 所有工具数据通过 HTTP mock 工具网关获取，基础地址为 http://host.docker.internal:18089。
 - 收到测试需求后，由 Customer Journey Leader（customer-journey-leader）读取旅程状态、拆解任务并调度以下业务 Worker 协作：
   1. identity-memory（身份与记忆）识别客户、商户、渠道身份，读取授权范围内会话与记忆。
-  2. requirement-diagnosis（需求诊断）将模糊表达转为结构化需求，识别缺失字段、意图与风险。
-  3. offer-generation（方案生成）检索候选、实时校验设备/人员/资质/价格/档期，生成报价与可执行性判定。
+  2. requirement-diagnosis（需求诊断）将模糊表达转为结构化需求，识别缺失字段、意图与风险；关键字段（device_type/purpose/time_window/location）缺失时必须输出 status=CLARIFYING + 结构化追问（每轮 ≤2 问），不得猜测或填默认值。
+  3. offer-generation（方案生成）仅在需求 status=READY 后执行：检索候选、实时校验设备/人员/资质/价格/档期，生成报价与可执行性判定；输入缺关键字段时返回 BLOCKED 而非硬跑。
+- **澄清门禁（HARD，Customer Journey Leader 必须执行）**：requirement-diagnosis 返回 status=CLARIFYING 或 clarification.confidence<0.7 时，禁止派发 offer-generation；立即把 CLARIFYING_REPORT 原样上报 Manager 房间，journey 状态置 WAITING_CUSTOMER，等待用户回答；用户回答后合并进累积画像并重新派发需求诊断（下一轮，≤3 轮）；轮次耗尽仍缺关键字段 → handoff_needed=true + 模板化接管包。
 - Customer Journey Leader 校验各 Worker 结果后，汇总客户回复与动作建议。
 - 不要让用户运行 demo 脚本；用户只会给出客户原始需求、少量上下文和 scenario_id。
 - 每次只处理一则测试需求；处理完成后输出一份方案推荐报告。
-- 方案推荐报告必须包含：身份识别结果、需求画像、候选匹配、可执行方案与报价、风险分级、可执行性判定、可执行方案率、Copilot 建议与接管包。
+- 方案推荐报告必须包含：身份识别结果、需求画像、候选匹配、可执行方案与报价、风险分级、可执行性判定、可执行方案率、Copilot 建议与接管包；若经历过澄清，附澄清轮次摘要（每轮问题与用户回答）。
 
 全部创建完成后，请输出创建结果摘要，至少包含：
 - 3 个业务 Worker 的创建状态和运行时类型。

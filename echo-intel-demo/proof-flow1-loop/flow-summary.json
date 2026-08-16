@@ -1,0 +1,33 @@
+{
+  "demo": "echo-intel-demo / 预约需求处理流程 (流程一)",
+  "loop_status": "PASS — 单场景 req_01 端到端闭环跑通",
+  "scenarios_run": 1,
+  "scenario_id": "req_01 (req01-plant-protection-20260815-200110)",
+  "subtasks": 3,
+  "subtask_nodes_passed": "3/3 (identity-memory / requirement-diagnosis / offer-generation)",
+  "feasible_rate": "2/2 = 100% (方案 A 与方案 B 均可执行)",
+  "recommended_plan": "方案 A: 2×30L 中效双机组并联, 中值 2,500 元 (≈12.5 元/亩), 风险 L1",
+  "room_messages_total": 804,
+  "room_messages_by_agent": {
+    "customer-journey-leader": 272,
+    "offer-generation": 51,
+    "requirement-diagnosis": 288,
+    "identity-memory": 191,
+    "admin": 2
+  },
+  "room_time_window": {
+    "start": "2026-08-15 19:39:09 UTC",
+    "end": "2026-08-15 20:16:51 UTC"
+  },
+  "agents_involved": [
+    "manager",
+    "customer-journey-leader",
+    "identity-memory",
+    "requirement-diagnosis",
+    "offer-generation"
+  ],
+  "tool_gateway_status": "DOWN (host.docker.internal:18089 HTTP=000) — 全部设备/人员/库存/价格为本地降级估算, merchant_id 为占位符",
+  "security_incident": "Worker 曾将明文凭据(cat agent.json / mc config)广播至房间; 已记录工单 BUG-credential-leak.md; 6 条明文事件待 redact(接口 404 待解决); 产物内已确认整改",
+  "traceability": "可追溯: Matrix 房间全量消息流 + 各 agent 的 result.md/spec.md + copaw.log + chats.json 均留存",
+  "audit_caveat": "mock 网关不可达导致方案率为本地估算, 非真实数据校验结果; 恢复网关后需在线复核"
+}

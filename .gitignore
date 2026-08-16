@@ -4,3 +4,6 @@ coverage/
 .DS_Store
 *.log
 
+
+# 运行时审计日志/聊天记录（可能含凭据痕迹，禁止入库）
+echo-intel-demo/proof-flow1-loop/audit-logs/

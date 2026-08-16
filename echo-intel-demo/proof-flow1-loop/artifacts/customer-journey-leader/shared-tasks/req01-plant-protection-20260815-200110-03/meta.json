@@ -1,0 +1,12 @@
+{
+  "task_id": "req01-plant-protection-20260815-200110-03",
+  "project_id": "req01-plant-protection-20260815-200110",
+  "task_title": "可执行方案与报价生成（offer-generation）",
+  "assigned_to": "offer-generation",
+  "room_id": "room:!yzjYJTyDd1v5wqyWc8:matrix-local.hiclaw.io:18080",
+  "status": "assigned",
+  "depends_on": [
+    "req01-plant-protection-20260815-200110-02"
+  ],
+  "assigned_at": "2026-08-15T20:14:07Z"
+}
